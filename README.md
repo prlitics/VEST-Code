@@ -1,6 +1,6 @@
 # VEST
 
-These repositories stores the datasets I've constructed in my work for **V**oting and **E**lections **S**cience **T**eam (**VEST.**)[https://twitter.com/vest_team]
+These repositories stores the datasets I've constructed in my work for **V**oting and **E**lections **S**cience **T**eam [**VEST.**](https://twitter.com/vest_team)
 
 Currently, I have done work with the Florida shapefile for its 2018 and 2016 general elections. 
 
@@ -23,7 +23,7 @@ The splitting of the precincts needed to construct the shapefiles for the state 
 ***Peter Licari***
 
 ## Acknowledgements
-* 2016 Florida state shapefiles were gathered and aggregated by (Brian Amos)[https://twitter.com/BrianAmos]
+* 2016 Florida state shapefiles were gathered and aggregated by [Brian Amos.](https://twitter.com/BrianAmos)
 * 2018 individual county files were gathered by Brian as well. 
 * Michael McDonald, who generously included me in the project and whose guidance has been indispensible.  
 * The whole uber-talented VEST team!
