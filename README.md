@@ -1,6 +1,6 @@
 # VEST
 
-These repositories stores the datasets I've constructed in my work for **V**oting and **E**lections **S**cience **T**eam [**VEST.**](https://twitter.com/vest_team)
+These repositories stores the datasets I've constructed in my work for **V**oting and **E**lections **S**cience **T**eam [(**VEST.**)](https://twitter.com/vest_team)
 
 Currently, I have done work with the Florida shapefile for its 2018 and 2016 general elections. 
 
