@@ -13,7 +13,7 @@ cty.names<-c("ALA","BAY", "BRA", "BRE", "CAL","CHA","CIT","CLA","CLL", "IND",
              "HAM","HEN","HER","HIG","HIL","HOL","JAC","JEF","LAF","LAK","LEE",
              "LEO","LEV","LIB","MAD","MAN","MRN","MRT","NAS","OKA","OKE","ORA",
              "OSC","PAL","PAS","PIN","POL","SAN","SAR","STJ","STL","SUM",
-             "SUW","TAY","VOL","WAK","WAL","WAS","PUT","HAR","BAK","SEM","BRO","GIL")
+             "SUW","TAY","VOL","WAK","WAL","PUT","HAR","BAK","SEM","BRO","GIL")
 
 
 for(cty in cty.names){
@@ -124,22 +124,13 @@ full <- rbind(full,cty)
 
 was<-read.csv2("C:/Users/prlic/Downloads/precinctlevelelectionresults2018gen/WAS_PctResults20181106.txt",sep = "\t",header = F, na.strings = " ", colClasses = c("V13"="character",
                                                                                                                                                                  "V16"="character")) 
-was1a<-was
-was2<-data.frame()
-i<-0
-was.prec.state<- c(1,2,3,4,5,6,7,8,9,10,11,12)
-was.prec.dbf   <- c(1,2,3,4,5,6,7,8,9,11,12,15)
-
-
-for(y in was.prec.state){
-  i <- i+1
-  was1<-was1a %>%
-    mutate(V6 = ifelse(V6 == y,was.prec.dbf[i],V6))%>%
-    filter(V6 == was.prec.dbf[i])
-  was1a<-was1a %>%
-    filter(!(V6==y))
-  was2<-rbind(was2,was1)
-}
+was2<-was %>%
+  mutate(V6 = case_when(
+    V6 == 12 ~ 15,
+    V6 == 11 ~ 12,
+    V6 == 10 ~ 11,
+    T ~ as.double(V6)
+  ))
 
 
 cty <- was2
@@ -223,7 +214,7 @@ full.regis <-  full %>%
 
 full.results <- merge(x = full.results, y = full.regis, by = "prec.id2" )
 
-FL.2018.Precs <- st_read("F:/Research/2019 Research/TampaBayTimes/2018_Precincts/Precincts2018General/Precincts2018General.shp")
+FL.2018.Precs <- st_read("H:/Research/2019 Research/TampaBayTimes/2018_Precincts/Precincts2018General/Precincts2018General.shp")
 FL.2018.Precs<-st_zm(FL.2018.Precs, what = "ZM")
 
 
@@ -276,11 +267,11 @@ FL.2018.Precs.Test <- FL.2018.Precs.Test %>%
     G18AGRDFri= DEM_commissionerofagriculture,            
     G18GOVDGil= DEM_governor,                              
     G18SENDNel= DEM_unitedstatessenator,                 
-    G18ATGDMoo= REP_attorneygeneral,                      
+    G18ATGRMoo= REP_attorneygeneral,                      
     G18CFORPat= REP_chieffinancialofficer,                
     G18AGRRCal= REP_commissionerofagriculture,           
     G18GOVRDeS= REP_governor,                             
-    G18SENDSco= REP_unitedstatessenator,                            
+    G18SENRSco= REP_unitedstatessenator,                            
     G18AGRRfRi= REF_governor,                                               
     G18ATGISis= NPA_attorneygeneral,                              
     G18ATGNPA= NPA_governor ,                            
@@ -296,7 +287,7 @@ FL.2018.Precs.Test <- FL.2018.Precs.Test %>%
 
 
 
-st_write(FL.2018.Precs.Test, "F:/Research/2019 Research/TampaBayTimes/2018_Precincts/Precincts2018General/VEST18Gen.shp")
+st_write(FL.2018.Precs.Test, "H:/Research/2019 Research/TampaBayTimes/2018_Precincts/Precincts2018General/VEST18Gen.shp")
 
 
 

@@ -12,7 +12,8 @@ cty.names<-c("ALA","BAY", "BRA", "BRE", "CAL","CHA","CIT","CLA","CLL", "IND",
              "HAM","HEN","HER","HIG","HIL","HOL","JAC","JEF","LAF","LAK","LEE",
              "LEO","LEV","LIB","MAD","MAN","MRN","MRT","NAS","OKA","OKE","ORA",
              "OSC","PAL","PAS","PIN","POL","SAN","SAR","STJ","STL","SUM",
-             "SUW","TAY","VOL","WAK","WAL","WAS","PUT","HAR","BAK","SEM","BRO","GIL")
+             "SUW","TAY","VOL","WAK","WAL","PUT","HAR","BAK","SEM","BRO","GIL")
+
 
 
 for(cty in cty.names){
@@ -125,25 +126,15 @@ cty <- cty %>%
 full <- rbind(full,cty)
 
 #Washington County
-
 was<-read.csv2("C:/Users/prlic/Downloads/precinctlevelelectionresults2018gen/WAS_PctResults20181106.txt",sep = "\t",header = F, na.strings = " ", colClasses = c("V13"="character",
                                                                                                                                                                  "V16"="character")) 
-was1a<-was
-was2<-data.frame()
-i<-0
-was.prec.state<- c(1,2,3,4,5,6,7,8,9,10,11,12)
-was.prec.dbf   <- c(1,2,3,4,5,6,7,8,9,11,12,15)
-
-
-for(y in was.prec.state){
-  i <- i+1
-  was1<-was1a %>%
-    mutate(V6 = ifelse(V6 == y,was.prec.dbf[i],V6))%>%
-    filter(V6 == was.prec.dbf[i])
-  was1a<-was1a %>%
-    filter(!(V6==y))
-  was2<-rbind(was2,was1)
-}
+was2<-was %>%
+  mutate(V6 = case_when(
+    V6 == 12 ~ 15,
+    V6 == 11 ~ 12,
+    V6 == 10 ~ 11,
+    T ~ as.double(V6)
+  ))
 
 
 cty <- was2
@@ -204,7 +195,7 @@ FL.2018.lh <- FL.2018.lh %>%
          prec.id3 = str_replace_all(prec.id3, fixed(" "),"")) 
 
 #Merge
-FL2018LowerHouse <- sp::merge(x= FL.2018.lh, y =full.lower.state, by = "prec.id3", all.x = T)
+FL2018LowerHouse <- sp::merge(x= FL.2018.lh, y =full.lower.state, by = "prec.id3", all.x = T, all.y = T)
 
 #Dealing
 FL2018LowerHouse <- FL2018LowerHouse %>% 
@@ -282,7 +273,7 @@ FL2018FederalHouse <- FL2018FederalHouse %>%
 #USH = US House
 
 
-st_write(FL2018FederalHouse, "H:/Research/2019 Research/TampaBayTimes/2018_Precincts/2018FederalHousePrecinctGeneral/FL2018GenFederalHouse.shp" )
+st_write(FL2018FederalHouse, "H:/Research/2019 Research/TampaBayTimes/2018_Precincts/2018FederalHousePrecinctGeneral/FL2018GenFederalHouse.shp")
 
 
 
