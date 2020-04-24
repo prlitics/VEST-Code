@@ -224,7 +224,7 @@ FL.2018.Precs<-st_zm(FL.2018.Precs, what = "ZM")
 
 FL.2018.Precs.Test <- full.results %>%
   select(
-    Pct_std=prec.id2,
+    prec.id2,
     G18AM1No = No_Am.1,                                  
     G18AM10No = No_Am.10,                                 
     G18AM11No= No_Am.11,                                 
@@ -281,16 +281,15 @@ FL.2018.Precs.Test <- full.results %>%
     G18GOVSum= total.cast_governor,                     
     G18SENSum= total.cast_unitedstatessenator,         
     SumRegis = total.reg)%>%
-  #The next function can be found 
-  allocate_virtual_precinct(id_col = "Pct_std", county_stem = c("SEM", "BRE"), ev_name = c("SEM00EV","BRE0999"))
+  #The next function can be found https://github.com/prlitics/VEST-Code/blob/master/Original%20Functions/allocate_virtual_precinct.R
+  allocate_virtual_precinct(id_col = "prec.id2", county_stem = c("SEM", "BRE"), ev_name = c("SEM00EV","BRE0999"))
 
-FL.2018.Precs.Test <- sp::merge(y = full.results, x = FL.2018.Precs, by.x = "prec.id2", by.x = "Pct_std", all.x = T)
+FL.2018.Precs.Test <- sp::merge(y = full.results, x = FL.2018.Precs, by.y = "prec.id2", by.x = "Pct_std", all.x = T)
+FL.2018.Precs.Test <- FL.2018.Precs.Test %>%
+  select(1:25,52:88,104) %>%
+  select(-c(57,55,54,52,50,49,48))
 
 
-grepl(paste(cntystm,"*",sep = ""),FL.2018.Precs.Test$"Pct_std")
 st_write(FL.2018.Precs.Test, "H:/Research/2019 Research/TampaBayTimes/2018_Precincts/Precincts2018General/VEST18Gen.shp")
 
-
-
-write_csv(full.results,"D:/Research/2019 Research/TampaBayTimes/2018_Precincts/StateWideGeneral18.csv", col_names = T, na = "")
 
